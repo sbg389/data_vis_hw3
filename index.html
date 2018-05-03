@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Restaurants per Zip</title>
+  <script src="https://fb.me/react-with-addons-15.1.0.js"></script>
+  <script src="https://fb.me/react-dom-15.1.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@3.3.1/build/vega.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@2.4.1/build/vega-lite.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@3.7.1/build/vega-embed.js"></script>
+</head>
+<body>
+    <div id="ui"></div><br/><br/>
+    <div id="vis"></div>
+
+  <script type="text/babel">
+class AppSelectingForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      zip:10018,
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  handleSubmit(event) {
+    //get the vega markup from the service/vis method
+    var spec = `/vis/${this.state.zip}`;
+    vegaEmbed('#vis', spec, {actions:false});
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+         <center><h1>NYC restaurants by food type and Zip CODE</h1></center>
+          &nbsp; &nbsp;
+          Zip Code: &nbsp;
+          <input type="text" name="zip" onChange={this.handleChange} />
+          </label>
+        <input type="submit" value="Update" />
+      </form>
+    );
+  }
+}
+
+ReactDOM.render(
+  <div>
+    <AppSelectingForm />
+  </div>,
+  document.getElementById('ui')
+);
+
+</script>
+
+</body>
+</html>
